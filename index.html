@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Configuração do Cardápio Automático</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #002a7b;
+      margin: 20px;
+      background-image: radial-gradient(circle at center bottom, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 100%);
+      background-size: cover;
+      color: #fff;
+    }
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo-container img {
+      max-width: 100%;
+      height: auto;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #000;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input, select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+    }
+    .color-group {
+      display: flex;
+      gap: 10px;
+    }
+    .color-group select {
+      width: 50%;
+    }
+    button {
+      padding: 12px 20px;
+      background-color: #002a7b;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #001e56;
+      transition: background-color 0.3s ease;
+    }
+    .error {
+      color: #ffaaaa;
+      margin-bottom: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <img src="logo.png" alt="Logo">
+  </div>
+  <form id="configForm">
+    <div id="errorMessage" class="error"></div>
+    
+    <label for="nomeEstabelecimento">Nome do estabelecimento:</label>
+    <input type="text" id="nomeEstabelecimento" name="nomeEstabelecimento" placeholder="Digite o nome do estabelecimento">
+    
+    <label>Cores do design:</label>
+    <div class="color-group">
+      <select id="corPrimaria" name="corPrimaria">
+        <option value="">Selecione a cor primária</option>
+        <option value="Azul">Azul</option>
+        <option value="Vermelho">Vermelho</option>
+        <option value="Verde">Verde</option>
+        <option value="Amarelo">Amarelo</option>
+        <option value="Laranja">Laranja</option>
+        <option value="Roxo">Roxo</option>
+        <option value="Rosa">Rosa</option>
+        <option value="Preto">Preto</option>
+        <option value="Branco">Branco</option>
+        <option value="Cinza">Cinza</option>
+        <option value="Marrom">Marrom</option>
+        <option value="Turquesa">Turquesa</option>
+        <option value="Violeta">Violeta</option>
+      </select>
+      <select id="corSecundaria" name="corSecundaria">
+        <option value="">Selecione a cor secundária</option>
+        <option value="Azul">Azul</option>
+        <option value="Vermelho">Vermelho</option>
+        <option value="Verde">Verde</option>
+        <option value="Amarelo">Amarelo</option>
+        <option value="Laranja">Laranja</option>
+        <option value="Roxo">Roxo</option>
+        <option value="Rosa">Rosa</option>
+        <option value="Preto">Preto</option>
+        <option value="Branco">Branco</option>
+        <option value="Cinza">Cinza</option>
+        <option value="Marrom">Marrom</option>
+        <option value="Turquesa">Turquesa</option>
+        <option value="Violeta">Violeta</option>
+      </select>
+    </div>
+    
+    <label for="retirada">Trabalha com entrega e retirada ou somente retirada?</label>
+    <select id="retirada" name="retirada">
+      <option value="">Selecione uma opção</option>
+      <option value="Entrega e Retirada">Entrega e Retirada</option>
+      <option value="Somente Retirada">Somente Retirada</option>
+    </select>
+    
+    <div id="taxaContainer" style="display:none;">
+      <label for="taxaEntrega">Taxa de entrega (se houver):</label>
+      <input type="number" step="0.01" id="taxaEntrega" name="taxaEntrega" placeholder="Ex: 4.00">
+    </div>
+    
+    <label for="dinheiro">Forma de pagamento - Dinheiro:</label>
+    <input type="text" id="dinheiro" name="dinheiro" placeholder="Ex: informe se aceita dinheiro (Sim/Não)">
+    
+    <label for="cartao">Forma de pagamento - Cartão de Crédito/Débito:</label>
+    <input type="text" id="cartao" name="cartao" placeholder="Ex: informe o link de pagamento">
+    
+    <label for="pix">Forma de pagamento - PIX:</label>
+    <input type="text" id="pix" name="pix" placeholder="Ex: informe a chave PIX">
+    
+    <label for="whatsRecebe">WhatsApp que receberá os pedidos:</label>
+    <input type="text" id="whatsRecebe" name="whatsRecebe" placeholder="Digite o número do WhatsApp">
+    
+    <button type="submit">Enviar Configuração</button>
+  </form>
+  
+  <script>
+    // Função para atualizar a visibilidade do campo de taxa de entrega
+    function atualizarTaxa() {
+      var retirada = document.getElementById("retirada").value;
+      var taxaContainer = document.getElementById("taxaContainer");
+      if (retirada === "Entrega e Retirada") {
+        taxaContainer.style.display = "block";
+      } else {
+        taxaContainer.style.display = "none";
+      }
+    }
+    
+    // Atualiza a visibilidade quando a opção muda
+    document.getElementById("retirada").addEventListener("change", atualizarTaxa);
+    
+    document.getElementById("configForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      document.getElementById("errorMessage").textContent = "";
+      
+      // Coleta os valores dos campos
+      var nome = document.getElementById("nomeEstabelecimento").value.trim();
+      var corPrimaria = document.getElementById("corPrimaria").value;
+      var corSecundaria = document.getElementById("corSecundaria").value;
+      var retirada = document.getElementById("retirada").value;
+      var taxa = "";
+      if (retirada === "Entrega e Retirada") {
+        taxa = document.getElementById("taxaEntrega").value.trim();
+        if (taxa === "") {
+          document.getElementById("errorMessage").textContent = "Preencha a taxa de entrega.";
+          return;
+        }
+      } else if(retirada === ""){
+        document.getElementById("errorMessage").textContent = "Selecione se trabalha com entrega e retirada ou somente retirada.";
+        return;
+      } else {
+        taxa = "0.00";
+      }
+      
+      var dinheiro = document.getElementById("dinheiro").value.trim();
+      var cartao = document.getElementById("cartao").value.trim();
+      var pix = document.getElementById("pix").value.trim();
+      var whats = document.getElementById("whatsRecebe").value.trim();
+      
+      // Validação dos campos essenciais
+      if (nome === "" || whats === "" || dinheiro === "" || cartao === "" || pix === "") {
+        document.getElementById("errorMessage").textContent = "Preencha o nome do estabelecimento, o WhatsApp e todas as formas de pagamento.";
+        return;
+      }
+      
+      // Monta a mensagem formatada
+      var mensagem = "Configuração do Cardápio Automático:\n\n";
+      mensagem += "Nome do estabelecimento: " + nome + "\n";
+      mensagem += "Cores do design: " + (corPrimaria || "Não especificado") + " / " + (corSecundaria || "Não especificado") + "\n";
+      mensagem += "Trabalha com: " + retirada + "\n";
+      mensagem += "Taxa de entrega: R$ " + parseFloat(taxa).toFixed(2) + "\n";
+      mensagem += "Pagamento - Dinheiro: " + dinheiro + "\n";
+      mensagem += "Pagamento - Cartão de Crédito/Débito: " + cartao + "\n";
+      mensagem += "Pagamento - PIX: " + pix + "\n";
+      mensagem += "WhatsApp que receberá os pedidos: " + whats;
+      
+      // Número fixo para envio
+      var phoneNumber = "98981729088";
+      var url = "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(mensagem);
+      window.location.href = url;
+    });
+  </script>
+</body>
+</html>

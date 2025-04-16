@@ -2,209 +2,244 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Configuração do Cardápio Automático</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel Administrativo</title>
   <style>
+    /* Estilos Gerais */
     body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #fff;
       font-family: Arial, sans-serif;
-      margin: 20px;
-      color: #fff;
-      background: linear-gradient(270deg, #1a1a1a, #555555, #1a1a1a);
-      background-size: 600% 600%;
-      animation: gradientAnimation 16s ease infinite;
     }
-    @keyframes gradientAnimation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    form {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #000;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-    }
-    input, select {
-      width: calc(100% - 20px);
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #333;
-      color: #fff;
-    }
-    .color-group {
-      display: flex;
-      gap: 10px;
-    }
-    .color-group select {
-      width: 50%;
-    }
-    button {
-      padding: 12px 20px;
-      background-color: #002a7b;
-      color: #fff;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    /* Cabeçalho */
+    .header {
+      background: #000;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
       width: 100%;
+      z-index: 1000;
     }
-    button:hover {
-      background-color: #001e56;
-      transition: background-color 0.3s ease;
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
     }
-    .error {
-      color: #ffaaaa;
-      margin-bottom: 10px;
+    /* Navegação do Painel */
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+      margin-top: 60px;
+      padding: 10px 20px;
+      background: #111;
+    }
+    .nav-buttons button {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
       font-weight: bold;
+    }
+    .nav-buttons button.active {
+      background: #f8c91c;
+      color: #000;
+    }
+    /* Conteúdo das Páginas */
+    .content {
+      margin-top: 120px;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    /* Tabela para Compras */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table th, table td {
+      border: 1px solid #444;
+      padding: 8px;
       text-align: center;
     }
+    table th {
+      background: #f8c91c;
+      color: #000;
+    }
+    /* Cards para Resumo */
+    .card {
+      background: #111;
+      padding: 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    /* Botões */
+    .export-button {
+      background: #f8c91c;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
   </style>
+  <!-- Biblioteca jsPDF para exportar em PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <form id="configForm">
-    <div id="errorMessage" class="error"></div>
-    
-    <label for="nomeEstabelecimento">Nome do estabelecimento:</label>
-    <input type="text" id="nomeEstabelecimento" name="nomeEstabelecimento" placeholder="Digite o nome do estabelecimento">
-    
-    <label>Cores do design:</label>
-    <div class="color-group">
-      <select id="corPrimaria" name="corPrimaria">
-        <option value="">Selecione a cor primária</option>
-        <option value="Azul">Azul</option>
-        <option value="Vermelho">Vermelho</option>
-        <option value="Verde">Verde</option>
-        <option value="Amarelo">Amarelo</option>
-        <option value="Laranja">Laranja</option>
-        <option value="Roxo">Roxo</option>
-        <option value="Rosa">Rosa</option>
-        <option value="Preto">Preto</option>
-        <option value="Branco">Branco</option>
-        <option value="Cinza">Cinza</option>
-        <option value="Marrom">Marrom</option>
-        <option value="Turquesa">Turquesa</option>
-        <option value="Violeta">Violeta</option>
-      </select>
-      <select id="corSecundaria" name="corSecundaria">
-        <option value="">Selecione a cor secundária</option>
-        <option value="Azul">Azul</option>
-        <option value="Vermelho">Vermelho</option>
-        <option value="Verde">Verde</option>
-        <option value="Amarelo">Amarelo</option>
-        <option value="Laranja">Laranja</option>
-        <option value="Roxo">Roxo</option>
-        <option value="Rosa">Rosa</option>
-        <option value="Preto">Preto</option>
-        <option value="Branco">Branco</option>
-        <option value="Cinza">Cinza</option>
-        <option value="Marrom">Marrom</option>
-        <option value="Turquesa">Turquesa</option>
-        <option value="Violeta">Violeta</option>
-      </select>
+  <div class="header">
+    <h1>Painel Administrativo</h1>
+  </div>
+
+  <!-- Navegação para alternar entre as páginas -->
+  <div class="nav-buttons">
+    <button id="btnCompras" class="active" onclick="showPage('compras')">Compras</button>
+    <button id="btnResumo" onclick="showPage('resumo')">Resumo</button>
+  </div>
+
+  <div class="content">
+    <!-- Página Compras -->
+    <div id="page-compras">
+      <h2>Compras</h2>
+      <button onclick="fetchCompras()" class="export-button">Atualizar Compras</button>
+      <table id="comprasTable">
+        <thead>
+          <tr>
+            <th>Produtos</th>
+            <th>Quantidade</th>
+            <th>Preço Total</th>
+            <th>Nome do Cliente</th>
+            <th>Número do Cliente</th>
+            <th>Data/Hora</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Os dados serão inseridos aqui via JavaScript -->
+        </tbody>
+      </table>
     </div>
-    
-    <label for="retirada">Trabalha com entrega e retirada ou somente retirada?</label>
-    <select id="retirada" name="retirada">
-      <option value="">Selecione uma opção</option>
-      <option value="Entrega e Retirada">Entrega e Retirada</option>
-      <option value="Somente Retirada">Somente Retirada</option>
-    </select>
-    
-    <div id="taxaContainer" style="display:none;">
-      <label for="taxaEntrega">Taxa de entrega (se houver):</label>
-      <input type="number" step="0.01" id="taxaEntrega" name="taxaEntrega" placeholder="Ex: 4.00">
+
+    <!-- Página Resumo -->
+    <div id="page-resumo" class="hidden">
+      <h2>Resumo</h2>
+      <button onclick="fetchResumo()" class="export-button">Atualizar Resumo</button>
+      <div id="resumoContent">
+        <!-- Exibição dos dados do resumo em um Card -->
+        <div class="card">
+          <p><strong>Total de Vendas:</strong> <span id="totalVendas"></span></p>
+          <p><strong>Número de Pedidos:</strong> <span id="numPedidos"></span></p>
+          <p><strong>Total de Produtos Vendidos:</strong> <span id="totalProdutos"></span></p>
+          <p><strong>Produto Mais Vendido:</strong> <span id="produtoMaisVendido"></span></p>
+          <p><strong>Nome de Quem Mais Comprou:</strong> <span id="quemMaisComprou"></span></p>
+          <p><strong>WhatsApp:</strong> <span id="whatsApp"></span></p>
+        </div>
+      </div>
+      <button onclick="exportPDF()" class="export-button">Exportar PDF</button>
     </div>
-    
-    <label for="dinheiro">Forma de pagamento - Dinheiro:</label>
-    <input type="text" id="dinheiro" name="dinheiro" placeholder="Ex: informe se aceita dinheiro (Sim/Não)">
-    
-    <label for="cartao">Forma de pagamento - Cartão de Crédito/Débito:</label>
-    <input type="text" id="cartao" name="cartao" placeholder="Ex: informe o link de pagamento">
-    
-    <label for="pix">Forma de pagamento - PIX:</label>
-    <input type="text" id="pix" name="pix" placeholder="Ex: informe a chave PIX">
-    
-    <label for="whatsRecebe">WhatsApp que receberá os pedidos:</label>
-    <input type="text" id="whatsRecebe" name="whatsRecebe" placeholder="Digite o número do WhatsApp">
-    
-    <button type="submit">Enviar Configuração</button>
-  </form>
-  
+  </div>
+
   <script>
-    // Função para atualizar a visibilidade do campo de taxa de entrega
-    function atualizarTaxa() {
-      var retirada = document.getElementById("retirada").value;
-      var taxaContainer = document.getElementById("taxaContainer");
-      if (retirada === "Entrega e Retirada") {
-        taxaContainer.style.display = "block";
-      } else {
-        taxaContainer.style.display = "none";
+    // Script ID do Apps Script
+    const scriptId = "AKfycbyBlctkIGzCURHDXzilb90LoPF53QxDG922nWfa3QaEZ8-qPPYfe6FaJi5vZhG_uevZyg";
+
+    // Função para alternar entre as páginas
+    function showPage(page) {
+      document.getElementById("page-compras").classList.add("hidden");
+      document.getElementById("page-resumo").classList.add("hidden");
+      document.getElementById("btnCompras").classList.remove("active");
+      document.getElementById("btnResumo").classList.remove("active");
+      
+      if (page === "compras") {
+        document.getElementById("page-compras").classList.remove("hidden");
+        document.getElementById("btnCompras").classList.add("active");
+        fetchCompras();
+      } else if (page === "resumo") {
+        document.getElementById("page-resumo").classList.remove("hidden");
+        document.getElementById("btnResumo").classList.add("active");
+        fetchResumo();
       }
     }
-    
-    // Atualiza a visibilidade quando a opção muda
-    document.getElementById("retirada").addEventListener("change", atualizarTaxa);
-    
-    document.getElementById("configForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      document.getElementById("errorMessage").textContent = "";
+
+    // Função para buscar os dados da aba "Compras" via GET
+    function fetchCompras() {
+      fetch(`https://script.google.com/macros/s/${scriptId}/exec?action=compras`)
+        .then(response => response.json())
+        .then(data => {
+          populateComprasTable(data);
+        })
+        .catch(err => console.error("Erro ao buscar compras:", err));
+    }
+
+    // Preenche a tabela de Compras com os dados recebidos
+    function populateComprasTable(data) {
+      const tbody = document.getElementById("comprasTable").querySelector("tbody");
+      tbody.innerHTML = "";
+      data.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${item.Produtos}</td>
+          <td>${item.Quantidade}</td>
+          <td>${item["Preço Total"]}</td>
+          <td>${item["Nome do Cliente"]}</td>
+          <td>${item["Número do Cliente"]}</td>
+          <td>${item["Data/Hora"]}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Função para buscar os dados da aba "Resumo" via GET
+    function fetchResumo() {
+      fetch(`https://script.google.com/macros/s/${scriptId}/exec?action=resumo`)
+        .then(response => response.json())
+        .then(data => {
+          // Preenche os elementos com os dados retornados
+          document.getElementById("totalVendas").innerText = data["Total de Vendas"];
+          document.getElementById("numPedidos").innerText = data["Número de Pedidos"];
+          document.getElementById("totalProdutos").innerText = data["Total de Produtos Vendidos"];
+          document.getElementById("produtoMaisVendido").innerText = data["Produto Mais Vendido"];
+          document.getElementById("quemMaisComprou").innerText = data["Nome de Quem Mais Comprou"];
+          document.getElementById("whatsApp").innerText = data["WhatsApp"];
+        })
+        .catch(err => console.error("Erro ao buscar resumo:", err));
+    }
+
+    // Função para exportar os dados do resumo em PDF usando jsPDF
+    function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
       
-      // Coleta os valores dos campos
-      var nome = document.getElementById("nomeEstabelecimento").value.trim();
-      var corPrimaria = document.getElementById("corPrimaria").value;
-      var corSecundaria = document.getElementById("corSecundaria").value;
-      var retirada = document.getElementById("retirada").value;
-      var taxa = "";
-      if (retirada === "Entrega e Retirada") {
-        taxa = document.getElementById("taxaEntrega").value.trim();
-        if (taxa === "") {
-          document.getElementById("errorMessage").textContent = "Preencha a taxa de entrega.";
-          return;
-        }
-      } else if(retirada === ""){
-        document.getElementById("errorMessage").textContent = "Selecione se trabalha com entrega e retirada ou somente retirada.";
-        return;
-      } else {
-        taxa = "0.00";
-      }
+      doc.setFontSize(16);
+      doc.text("Relatório de Resumo", 10, 20);
+      doc.setFontSize(12);
       
-      var dinheiro = document.getElementById("dinheiro").value.trim();
-      var cartao = document.getElementById("cartao").value.trim();
-      var pix = document.getElementById("pix").value.trim();
-      var whats = document.getElementById("whatsRecebe").value.trim();
+      const lineHeight = 10;
+      let currentY = 30;
       
-      // Validação dos campos essenciais
-      if (nome === "" || whats === "" || dinheiro === "" || cartao === "" || pix === "") {
-        document.getElementById("errorMessage").textContent = "Preencha o nome do estabelecimento, o WhatsApp e todas as formas de pagamento.";
-        return;
-      }
+      doc.text(`Total de Vendas: ${document.getElementById("totalVendas").innerText}`, 10, currentY);
+      currentY += lineHeight;
+      doc.text(`Número de Pedidos: ${document.getElementById("numPedidos").innerText}`, 10, currentY);
+      currentY += lineHeight;
+      doc.text(`Total de Produtos Vendidos: ${document.getElementById("totalProdutos").innerText}`, 10, currentY);
+      currentY += lineHeight;
+      doc.text(`Produto Mais Vendido: ${document.getElementById("produtoMaisVendido").innerText}`, 10, currentY);
+      currentY += lineHeight;
+      doc.text(`Nome de Quem Mais Comprou: ${document.getElementById("quemMaisComprou").innerText}`, 10, currentY);
+      currentY += lineHeight;
+      doc.text(`WhatsApp: ${document.getElementById("whatsApp").innerText}`, 10, currentY);
       
-      // Monta a mensagem formatada
-      var mensagem = "Configuração do Cardápio Automático:\n\n";
-      mensagem += "Nome do estabelecimento: " + nome + "\n";
-      mensagem += "Cores do design: " + (corPrimaria || "Não especificado") + " / " + (corSecundaria || "Não especificado") + "\n";
-      mensagem += "Trabalha com: " + retirada + "\n";
-      mensagem += "Taxa de entrega: R$ " + parseFloat(taxa).toFixed(2) + "\n";
-      mensagem += "Pagamento - Dinheiro: " + dinheiro + "\n";
-      mensagem += "Pagamento - Cartão de Crédito/Débito: " + cartao + "\n";
-      mensagem += "Pagamento - PIX: " + pix + "\n";
-      mensagem += "WhatsApp que receberá os pedidos: " + whats;
-      
-      // Número fixo para envio
-      var phoneNumber = "98981729088";
-      var url = "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(mensagem);
-      window.location.href = url;
-    });
+      doc.save("Resumo.pdf");
+    }
+
+    // Inicializa mostrando a página de Compras
+    showPage("compras");
   </script>
 </body>
 </html>

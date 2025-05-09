@@ -2,202 +2,88 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel da Açaíteria</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- Meta viewport atualizado para evitar zoom -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Landing Page - Receitas Saudáveis</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #5c258d, #a72879);
-      color: white;
+    /* Reset básico e prevenção de scroll horizontal */
+    html, body {
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
-    header {
-      padding: 1em;
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #050506; /* Fundo preto da página */
+      font-family: Arial, sans-serif;
+      padding: 0px;
+    }
+    /* Componente de Cronômetro fixo no topo */
+    .offer-timer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #790000;
+      color: #fff;
+      padding: 4px;
       text-align: center;
-      background-color: rgba(255,255,255,0.05);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    .container {
-      padding: 2em;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1em;
-      justify-content: center;
-    }
-    .card {
-      background: rgba(255,255,255,0.1);
-      padding: 1.5em;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      flex: 1 1 200px;
-      text-align: center;
-    }
-    .card h2 {
-      font-size: 1.5em;
-      margin-bottom: 0.5em;
-    }
-    #grafico-dia {
-      margin: 3em auto;
-      max-width: 800px;
-      background: rgba(255,255,255,0.1);
-      padding: 2em;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-    .mensagem {
-      font-size: 1.2em;
-      text-align: center;
-      margin: 2em 0;
-    }
-    .botao {
-      display: block;
-      margin: 1em auto;
-      padding: 0.8em 1.5em;
-      background-color: #ffcc00;
-      color: #4a004a;
       font-weight: bold;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transition: background 0.3s;
+      z-index: 1001;
     }
-    .botao:hover {
-      background-color: #ffe066;
+    .offer-timer p,
+    .offer-timer #countdown {
+      font-size: 20px;
+      margin: 0;
+    }
+    .offer-timer #countdown {
+      margin-top: 2px;
+    }
+    /* Conteúdo centralizado */
+    .content-wrapper {
+      margin: 70px auto 0;
+      max-width: 420px;
+      text-align: center;
+    }
+    /* Hero Image */
+    .hero-image {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      display: block;
+      margin: 0 auto 20px;
     }
   </style>
+  <script>
+    // Cronômetro: 10 minutos a partir do carregamento
+    var countDownDate = new Date().getTime() + 10 * 60 * 1000;
+    var countdownfunction = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s ⏳";
+      if (distance < 0) {
+        clearInterval(countdownfunction);
+        document.getElementById("countdown").innerHTML = "Oferta Expirada";
+      }
+    }, 1000);
+  </script>
 </head>
 <body>
-  <header>
-    <h1>Painel da Açaíteria</h1>
-  </header>
-
-  <div class="container" id="painel">
-    <div class="cards" id="resumo">
-      <!-- Cards automáticos -->
-    </div>
-
-    <div class="mensagem" id="mensagem">
-      Carregando comparativo do dia...
-    </div>
-
-    <div id="grafico-dia">
-      <canvas id="grafico"></canvas>
-    </div>
-
-    <button class="botao" onclick="gerarPDF()">Baixar PDF</button>
+  <!-- Cronômetro fixo -->
+  <div class="offer-timer">
+    <p>OFERTA LIMITADA! APROVEITE AGORA!</p>
+    <div id="countdown"></div>
   </div>
 
-  <script>
-    const urlPedidos = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdgBk-3LeNnqODPocNVQy2bGzJbjtozTrAr7-BX51A7jClHGfAPEEZjy9zFop6d6HpB7O8-nTVHz9E/pub?output=csv';
-
-    async function carregarDados() {
-      const resposta = await fetch(urlPedidos);
-      const texto = await resposta.text();
-      const linhas = texto.split('\n').map(l => l.split(','));
-
-      const cabecalho = linhas[0];
-      const dados = linhas.slice(1).filter(l => l.length >= 6);
-
-      const dataIndex = cabecalho.indexOf('Data/Hora');
-      const valorIndex = cabecalho.indexOf('Preço Total');
-
-      const vendasPorDia = {};
-      let hoje = new Date().toISOString().split('T')[0];
-      let ontem = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-      let totalHoje = 0, totalOntem = 0;
-
-      dados.forEach(l => {
-        const dataHora = l[dataIndex];
-        const valor = parseFloat(l[valorIndex].replace(',', '.')) || 0;
-        const dia = dataHora.split(' ')[0];
-        if (!vendasPorDia[dia]) vendasPorDia[dia] = 0;
-        vendasPorDia[dia] += valor;
-
-        if (dia === hoje) totalHoje += valor;
-        if (dia === ontem) totalOntem += valor;
-      });
-
-      atualizarMensagem(totalHoje, totalOntem);
-      gerarGrafico(vendasPorDia);
-      carregarResumo();
-    }
-
-    function atualizarMensagem(hoje, ontem) {
-      let msg = "";
-      if (hoje > ontem) {
-        msg = `Hoje foi melhor que ontem: R$ ${(hoje - ontem).toFixed(2)} a mais em vendas.`;
-      } else if (ontem > hoje) {
-        msg = `Ontem foi melhor que hoje: R$ ${(ontem - hoje).toFixed(2)} a mais em vendas.`;
-      } else {
-        msg = `Hoje e ontem tiveram o mesmo valor em vendas.`;
-      }
-      document.getElementById('mensagem').innerText = msg;
-    }
-
-    function gerarGrafico(dados) {
-      const ctx = document.getElementById('grafico').getContext('2d');
-      const labels = Object.keys(dados);
-      const valores = Object.values(dados);
-
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [{
-            label: 'Total vendido (R$)',
-            data: valores,
-            backgroundColor: '#ffcc00',
-            borderRadius: 10
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false },
-            title: {
-              display: true,
-              text: 'Vendas por Dia'
-            }
-          }
-        }
-      });
-    }
-
-    function gerarPDF() {
-      const painel = document.getElementById('painel');
-      html2pdf().from(painel).save('painel_acaiteria.pdf');
-    }
-
-    async function carregarResumo() {
-      // Simulando os dados da aba "Resumo"
-      const resumo = {
-        'Total de Vendas': 'R$ 2.340,00',
-        'Número de Pedidos': '98',
-        'Total de Produtos Vendidos': '145',
-        'Produto Mais Vendido': 'Açaí Tradicional'
-      };
-
-      const container = document.getElementById('resumo');
-      Object.entries(resumo).forEach(([titulo, valor]) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<h2>${valor}</h2><p>${titulo}</p>`;
-        container.appendChild(card);
-      });
-    }
-
-    carregarDados();
-  </script>
+  <!-- Conteúdo principal -->
+  <div class="content-wrapper">
+    <!-- Hero section -->
+    <img src="hero.png" alt="Capa do e-book de Receitas" class="hero-image">
+    <!-- Aqui você pode adicionar título, subtítulo, botões e demais seções -->
+  </div>
 </body>
 </html>

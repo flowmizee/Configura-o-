@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <!-- Meta viewport atualizado para evitar zoom -->
@@ -18,7 +17,7 @@
     body {
       background: #050506; /* Fundo preto da página */
       font-family: Arial, sans-serif;
-      padding: 0px;
+      padding: 0;
     }
     /* Componente de Cronômetro fixo no topo */
     .offer-timer {
@@ -46,14 +45,64 @@
       margin: 70px auto 0;
       max-width: 420px;
       text-align: center;
+      position: relative;
     }
-    /* Hero Image */
-    .hero-image {
+    /* Hero container para posicionar botão */
+    .hero-container {
+      position: relative;
       width: 100%;
       max-width: 420px;
+      margin: 0 auto 20px;
+    }
+    .hero-image {
+      width: 100%;
       height: auto;
       display: block;
-      margin: 0 auto 20px;
+    }
+    /* Animação de flutuação para o botão */
+    @keyframes float {
+      0%   { transform: translateX(-50%) translateY(0); }
+      50%  { transform: translateX(-50%) translateY(-8px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+    /* Animação de clique */
+    @keyframes clickEffect {
+      0%   { transform: translateX(-50%) translateY(0) scale(1); }
+      50%  { transform: translateX(-50%) translateY(-4px) scale(0.98); }
+      100% { transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    /* Botão flutuante sobre a imagem */
+    .ebook-btn {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      background-color: #790000;
+      color: #fff;
+      width: 300px;          
+      height: 70px;          
+      line-height: 70px;
+      font-size: 20px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 35px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      z-index: 10;
+      animation: float 3s ease-in-out infinite;
+      transition: box-shadow 0.2s;
+    }
+    .ebook-btn:active {
+      animation: clickEffect 0.3s ease-in-out forwards;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+    @media (max-width: 480px) {
+      .ebook-btn {
+        width: 260px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+      }
     }
   </style>
   <script>
@@ -77,12 +126,12 @@
   <div class="offer-timer">
     <p>OFERTA LIMITADA! APROVEITE AGORA!</p>
     <div id="countdown"></div>
-  </div>
-
-  <!-- Conteúdo principal -->
-  <div class="content-wrapper">
+  </div>  <!-- Conteúdo principal -->  <div class="content-wrapper">
     <!-- Hero section -->
-    <img src="hero.png" alt="Capa do e-book de Receitas" class="hero-image">
+    <div class="hero-container">
+      <img src="hero.png" alt="Capa do e-book de Receitas" class="hero-image">
+      <a href="#" class="ebook-btn">Quero meu E-Book</a>
+    </div>
     <!-- Aqui você pode adicionar título, subtítulo, botões e demais seções -->
   </div>
 </body>

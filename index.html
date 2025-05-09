@@ -2,244 +2,202 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Painel Administrativo</title>
+  <title>Painel da Açaíteria</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    /* Estilos Gerais */
     body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #5c258d, #a72879);
+      color: white;
       margin: 0;
       padding: 0;
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
     }
-    /* Cabeçalho */
-    .header {
-      background: #000;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding: 10px 20px;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
+    header {
+      padding: 1em;
+      text-align: center;
+      background-color: rgba(255,255,255,0.05);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
-    .header h1 {
+    h1 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 2em;
     }
-    /* Navegação do Painel */
-    .nav-buttons {
+    .container {
+      padding: 2em;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .cards {
       display: flex;
-      gap: 20px;
-      margin-top: 60px;
-      padding: 10px 20px;
-      background: #111;
+      flex-wrap: wrap;
+      gap: 1em;
+      justify-content: center;
     }
-    .nav-buttons button {
-      background: #fff;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-    .nav-buttons button.active {
-      background: #f8c91c;
-      color: #000;
-    }
-    /* Conteúdo das Páginas */
-    .content {
-      margin-top: 120px;
-      padding: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-    /* Tabela para Compras */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table th, table td {
-      border: 1px solid #444;
-      padding: 8px;
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 1.5em;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      flex: 1 1 200px;
       text-align: center;
     }
-    table th {
-      background: #f8c91c;
-      color: #000;
+    .card h2 {
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
     }
-    /* Cards para Resumo */
-    .card {
-      background: #111;
-      padding: 20px;
-      border: 1px solid #444;
-      border-radius: 5px;
-      margin-bottom: 20px;
+    #grafico-dia {
+      margin: 3em auto;
+      max-width: 800px;
+      background: rgba(255,255,255,0.1);
+      padding: 2em;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
-    /* Botões */
-    .export-button {
-      background: #f8c91c;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 5px;
+    .mensagem {
+      font-size: 1.2em;
+      text-align: center;
+      margin: 2em 0;
+    }
+    .botao {
+      display: block;
+      margin: 1em auto;
+      padding: 0.8em 1.5em;
+      background-color: #ffcc00;
+      color: #4a004a;
       font-weight: bold;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: background 0.3s;
+    }
+    .botao:hover {
+      background-color: #ffe066;
     }
   </style>
-  <!-- Biblioteca jsPDF para exportar em PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <div class="header">
-    <h1>Painel Administrativo</h1>
-  </div>
+  <header>
+    <h1>Painel da Açaíteria</h1>
+  </header>
 
-  <!-- Navegação para alternar entre as páginas -->
-  <div class="nav-buttons">
-    <button id="btnCompras" class="active" onclick="showPage('compras')">Compras</button>
-    <button id="btnResumo" onclick="showPage('resumo')">Resumo</button>
-  </div>
-
-  <div class="content">
-    <!-- Página Compras -->
-    <div id="page-compras">
-      <h2>Compras</h2>
-      <button onclick="fetchCompras()" class="export-button">Atualizar Compras</button>
-      <table id="comprasTable">
-        <thead>
-          <tr>
-            <th>Produtos</th>
-            <th>Quantidade</th>
-            <th>Preço Total</th>
-            <th>Nome do Cliente</th>
-            <th>Número do Cliente</th>
-            <th>Data/Hora</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Os dados serão inseridos aqui via JavaScript -->
-        </tbody>
-      </table>
+  <div class="container" id="painel">
+    <div class="cards" id="resumo">
+      <!-- Cards automáticos -->
     </div>
 
-    <!-- Página Resumo -->
-    <div id="page-resumo" class="hidden">
-      <h2>Resumo</h2>
-      <button onclick="fetchResumo()" class="export-button">Atualizar Resumo</button>
-      <div id="resumoContent">
-        <!-- Exibição dos dados do resumo em um Card -->
-        <div class="card">
-          <p><strong>Total de Vendas:</strong> <span id="totalVendas"></span></p>
-          <p><strong>Número de Pedidos:</strong> <span id="numPedidos"></span></p>
-          <p><strong>Total de Produtos Vendidos:</strong> <span id="totalProdutos"></span></p>
-          <p><strong>Produto Mais Vendido:</strong> <span id="produtoMaisVendido"></span></p>
-          <p><strong>Nome de Quem Mais Comprou:</strong> <span id="quemMaisComprou"></span></p>
-          <p><strong>WhatsApp:</strong> <span id="whatsApp"></span></p>
-        </div>
-      </div>
-      <button onclick="exportPDF()" class="export-button">Exportar PDF</button>
+    <div class="mensagem" id="mensagem">
+      Carregando comparativo do dia...
     </div>
+
+    <div id="grafico-dia">
+      <canvas id="grafico"></canvas>
+    </div>
+
+    <button class="botao" onclick="gerarPDF()">Baixar PDF</button>
   </div>
 
   <script>
-    // Script ID do Apps Script
-    const scriptId = "AKfycbwbq2sSaWupNP5Y5a-YZ6sINKdVBFElUygoOMQb0WcTgjRZmWEyI031Su2wuTfXeM7VFA";
+    const urlPedidos = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdgBk-3LeNnqODPocNVQy2bGzJbjtozTrAr7-BX51A7jClHGfAPEEZjy9zFop6d6HpB7O8-nTVHz9E/pub?output=csv';
 
-    // Função para alternar entre as páginas
-    function showPage(page) {
-      document.getElementById("page-compras").classList.add("hidden");
-      document.getElementById("page-resumo").classList.add("hidden");
-      document.getElementById("btnCompras").classList.remove("active");
-      document.getElementById("btnResumo").classList.remove("active");
-      
-      if (page === "compras") {
-        document.getElementById("page-compras").classList.remove("hidden");
-        document.getElementById("btnCompras").classList.add("active");
-        fetchCompras();
-      } else if (page === "resumo") {
-        document.getElementById("page-resumo").classList.remove("hidden");
-        document.getElementById("btnResumo").classList.add("active");
-        fetchResumo();
+    async function carregarDados() {
+      const resposta = await fetch(urlPedidos);
+      const texto = await resposta.text();
+      const linhas = texto.split('\n').map(l => l.split(','));
+
+      const cabecalho = linhas[0];
+      const dados = linhas.slice(1).filter(l => l.length >= 6);
+
+      const dataIndex = cabecalho.indexOf('Data/Hora');
+      const valorIndex = cabecalho.indexOf('Preço Total');
+
+      const vendasPorDia = {};
+      let hoje = new Date().toISOString().split('T')[0];
+      let ontem = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+      let totalHoje = 0, totalOntem = 0;
+
+      dados.forEach(l => {
+        const dataHora = l[dataIndex];
+        const valor = parseFloat(l[valorIndex].replace(',', '.')) || 0;
+        const dia = dataHora.split(' ')[0];
+        if (!vendasPorDia[dia]) vendasPorDia[dia] = 0;
+        vendasPorDia[dia] += valor;
+
+        if (dia === hoje) totalHoje += valor;
+        if (dia === ontem) totalOntem += valor;
+      });
+
+      atualizarMensagem(totalHoje, totalOntem);
+      gerarGrafico(vendasPorDia);
+      carregarResumo();
+    }
+
+    function atualizarMensagem(hoje, ontem) {
+      let msg = "";
+      if (hoje > ontem) {
+        msg = `Hoje foi melhor que ontem: R$ ${(hoje - ontem).toFixed(2)} a mais em vendas.`;
+      } else if (ontem > hoje) {
+        msg = `Ontem foi melhor que hoje: R$ ${(ontem - hoje).toFixed(2)} a mais em vendas.`;
+      } else {
+        msg = `Hoje e ontem tiveram o mesmo valor em vendas.`;
       }
+      document.getElementById('mensagem').innerText = msg;
     }
 
-    // Função para buscar os dados da aba "Compras" via GET
-    function fetchCompras() {
-      fetch(`https://script.google.com/macros/s/${scriptId}/exec?action=compras`)
-        .then(response => response.json())
-        .then(data => {
-          populateComprasTable(data);
-        })
-        .catch(err => console.error("Erro ao buscar compras:", err));
-    }
+    function gerarGrafico(dados) {
+      const ctx = document.getElementById('grafico').getContext('2d');
+      const labels = Object.keys(dados);
+      const valores = Object.values(dados);
 
-    // Preenche a tabela de Compras com os dados recebidos
-    function populateComprasTable(data) {
-      const tbody = document.getElementById("comprasTable").querySelector("tbody");
-      tbody.innerHTML = "";
-      data.forEach(item => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${item.Produtos}</td>
-          <td>${item.Quantidade}</td>
-          <td>${item["Preço Total"]}</td>
-          <td>${item["Nome do Cliente"]}</td>
-          <td>${item["Número do Cliente"]}</td>
-          <td>${item["Data/Hora"]}</td>
-        `;
-        tbody.appendChild(row);
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Total vendido (R$)',
+            data: valores,
+            backgroundColor: '#ffcc00',
+            borderRadius: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Vendas por Dia'
+            }
+          }
+        }
       });
     }
 
-    // Função para buscar os dados da aba "Resumo" via GET
-    function fetchResumo() {
-      fetch(`https://script.google.com/macros/s/${scriptId}/exec?action=resumo`)
-        .then(response => response.json())
-        .then(data => {
-          // Preenche os elementos com os dados retornados
-          document.getElementById("totalVendas").innerText = data["Total de Vendas"];
-          document.getElementById("numPedidos").innerText = data["Número de Pedidos"];
-          document.getElementById("totalProdutos").innerText = data["Total de Produtos Vendidos"];
-          document.getElementById("produtoMaisVendido").innerText = data["Produto Mais Vendido"];
-          document.getElementById("quemMaisComprou").innerText = data["Nome de Quem Mais Comprou"];
-          document.getElementById("whatsApp").innerText = data["WhatsApp"];
-        })
-        .catch(err => console.error("Erro ao buscar resumo:", err));
+    function gerarPDF() {
+      const painel = document.getElementById('painel');
+      html2pdf().from(painel).save('painel_acaiteria.pdf');
     }
 
-    // Função para exportar os dados do resumo em PDF usando jsPDF
-    function exportPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      
-      doc.setFontSize(16);
-      doc.text("Relatório de Resumo", 10, 20);
-      doc.setFontSize(12);
-      
-      const lineHeight = 10;
-      let currentY = 30;
-      
-      doc.text(`Total de Vendas: ${document.getElementById("totalVendas").innerText}`, 10, currentY);
-      currentY += lineHeight;
-      doc.text(`Número de Pedidos: ${document.getElementById("numPedidos").innerText}`, 10, currentY);
-      currentY += lineHeight;
-      doc.text(`Total de Produtos Vendidos: ${document.getElementById("totalProdutos").innerText}`, 10, currentY);
-      currentY += lineHeight;
-      doc.text(`Produto Mais Vendido: ${document.getElementById("produtoMaisVendido").innerText}`, 10, currentY);
-      currentY += lineHeight;
-      doc.text(`Nome de Quem Mais Comprou: ${document.getElementById("quemMaisComprou").innerText}`, 10, currentY);
-      currentY += lineHeight;
-      doc.text(`WhatsApp: ${document.getElementById("whatsApp").innerText}`, 10, currentY);
-      
-      doc.save("Resumo.pdf");
+    async function carregarResumo() {
+      // Simulando os dados da aba "Resumo"
+      const resumo = {
+        'Total de Vendas': 'R$ 2.340,00',
+        'Número de Pedidos': '98',
+        'Total de Produtos Vendidos': '145',
+        'Produto Mais Vendido': 'Açaí Tradicional'
+      };
+
+      const container = document.getElementById('resumo');
+      Object.entries(resumo).forEach(([titulo, valor]) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h2>${valor}</h2><p>${titulo}</p>`;
+        container.appendChild(card);
+      });
     }
 
-    // Inicializa mostrando a página de Compras
-    showPage("compras");
+    carregarDados();
   </script>
 </body>
 </html>

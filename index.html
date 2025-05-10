@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <!-- Meta viewport atualizado para evitar zoom -->
@@ -40,42 +41,31 @@
     .offer-timer #countdown {
       margin-top: 2px;
     }
-    /* Conteúdo centralizado */
+    /* Wrapper geral para centralizar conteúdo */
     .content-wrapper {
       margin: 70px auto 0;
       max-width: 420px;
       text-align: center;
       position: relative;
     }
-    /* Hero container para posicionar botão */
+    /* Hero container para posicionar botão sobre cada imagem */
     .hero-container {
       position: relative;
       width: 100%;
       max-width: 420px;
-      margin: 0 auto 20px;
+      margin: 0 auto 0px;
     }
     .hero-image {
       width: 100%;
       height: auto;
       display: block;
     }
-    /* Animação de flutuação para o botão */
-    @keyframes float {
-      0%   { transform: translateX(-50%) translateY(0); }
-      50%  { transform: translateX(-50%) translateY(-8px); }
-      100% { transform: translateX(-50%) translateY(0); }
-    }
-    /* Animação de clique */
-    @keyframes clickEffect {
-      0%   { transform: translateX(-50%) translateY(0) scale(1); }
-      50%  { transform: translateX(-50%) translateY(-4px) scale(0.98); }
-      100% { transform: translateX(-50%) translateY(0) scale(1); }
-    }
     /* Botão flutuante sobre a imagem */
     .ebook-btn {
       position: absolute;
       bottom: 16px;
       left: 50%;
+      transform: translateX(-50%);
       background-color: #790000;
       color: #fff;
       width: 300px;          
@@ -96,6 +86,18 @@
       animation: clickEffect 0.3s ease-in-out forwards;
       box-shadow: 0 1px 4px rgba(0,0,0,0.6);
     }
+    /* Animações */
+    @keyframes float {
+      0%   { transform: translateX(-50%) translateY(0); }
+      50%  { transform: translateX(-50%) translateY(-8px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+    @keyframes clickEffect {
+      0%   { transform: translateX(-50%) translateY(0) scale(1); }
+      50%  { transform: translateX(-50%) translateY(-4px) scale(0.98); }
+      100% { transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    /* Responsividade */
     @media (max-width: 480px) {
       .ebook-btn {
         width: 260px;
@@ -126,13 +128,23 @@
   <div class="offer-timer">
     <p>OFERTA LIMITADA! APROVEITE AGORA!</p>
     <div id="countdown"></div>
-  </div>  <!-- Conteúdo principal -->  <div class="content-wrapper">
-    <!-- Hero section -->
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="content-wrapper">
+    <!-- Primeira hero section -->
     <div class="hero-container">
       <img src="hero.png" alt="Capa do e-book de Receitas" class="hero-image">
       <a href="#" class="ebook-btn">Quero meu E-Book</a>
     </div>
-    <!-- Aqui você pode adicionar título, subtítulo, botões e demais seções -->
+
+    <!-- Segunda hero section -->
+    <div class="hero-container">
+      <img src="hero2.png" alt="Segunda capa do e-book de Receitas" class="hero-image">
+      <a href="#" class="ebook-btn">Garantir meu E-Book</a>
+    </div>
+
+    <!-- Outras seções que você quiser adicionar aqui -->
   </div>
 </body>
 </html>

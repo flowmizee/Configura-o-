@@ -70,12 +70,11 @@
         line-height: 50px; font-size: 18px;
       }
     }
-    /* FAQ */
     .faq-section {
       background: #fff;
       padding: 40px 20px;
       max-width: 420px;
-      margin: 0 auto; /* sem espaço acima */
+      margin: 0 auto;
       border-radius: 8px;
     }
     .faq-title {
@@ -108,6 +107,59 @@
       color: #333;
       line-height: 1.4;
     }
+    .final-section {
+      background: #790000;
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .final-section h2 {
+      color: #ffcc00;
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+    .final-section p {
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .nav-links a {
+      color: #fff;
+      background: #ffcc00;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+    .social-icons a img {
+      width: 40px;
+      height: 40px;
+    }
+    .buy-btn {
+      background: #fff;
+      color: #790000;
+      width: 300px;
+      height: 70px;
+      line-height: 70px;
+      border-radius: 35px;
+      font-size: 20px;
+      font-weight: bold;
+      margin: auto;
+      display: inline-block;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
   </style>
 </head>
 <body>
@@ -116,66 +168,79 @@
     <div id="countdown"></div>
   </div>
   <div class="content-wrapper">
-    <div class="hero-container">
+    <div class="hero-container" id="inicio">
       <img src="hero.png" class="hero-image" alt="Capa do e-book de Receitas">
       <a href="#" class="ebook-btn">Quero meu E-Book</a>
     </div>
-    <div class="hero-container">
+    <div class="hero-container" id="porque">
       <img src="hero2.png" class="hero-image" alt="Segunda capa do e-book">
     </div>
-    <div class="hero-container">
+    <div class="hero-container" id="depoimentos">
       <img src="hero3.png" class="hero-image" alt="Terceira capa do e-book">
       <a href="#" class="ebook-btn">Garantir meu E-BOOK</a>
     </div>
     <div class="hero-container">
       <img src="hero4.png" class="hero-image" alt="Quarta capa do e-book">
     </div>
-    <div class="hero-container">
+    <div class="hero-container" id="conteudo">
       <img src="hero5.png" class="hero-image" alt="Quinta capa do e-book">
-      <a href="#" class="ebook-btn">Quero meu E-Book</a>
+      <a href="#" class="ebook-btn">Ver Lista Completa</a>
     </div>
-  </div>  <section class="faq-section">
-    <h2 class="faq-title">Perguntas Frequentes (FAQ)</h2><div class="faq-item">
-  <img src="faq1.png" alt="Ícone recebimento">
-  <div class="text">
-    <div class="question">1. Como vou receber o e-book?</div>
-    <div class="answer">Você receberá o e-book diretamente no seu e-mail logo após a confirmação do pagamento. É rápido e prático!</div>
   </div>
-</div>
-
-<div class="faq-item">
-  <img src="faq2.png" alt="Ícone glúten lactose">
-  <div class="text">
-    <div class="question">2. O conteúdo é realmente sem glúten e sem lactose?</div>
-    <div class="answer">Sim! Todas as receitas foram pensadas para quem tem intolerância ou deseja evitar esses ingredientes.</div>
-  </div>
-</div>
-
-<div class="faq-item">
-  <img src="faq3.png" alt="Ícone dificuldade">
-  <div class="text">
-    <div class="question">3. É difícil preparar as receitas?</div>
-    <div class="answer">Nada disso! São receitas simples, com ingredientes acessíveis, perfeitas para o dia a dia.</div>
-  </div>
-</div>
-
-<div class="faq-item">
-  <img src="faq4.png" alt="Ícone experiência">
-  <div class="text">
-    <div class="question">4. Preciso ter experiência na cozinha para fazer as receitas?</div>
-    <div class="answer">De jeito nenhum! As receitas são simples, explicadas passo a passo e ideais até para quem está começando.</div>
-  </div>
-</div>
-
-<div class="faq-item">
-  <img src="faq5.png" alt="Ícone pagamento seguro">
-  <div class="text">
-    <div class="question">5. O pagamento é seguro?</div>
-    <div class="answer">Sim! O pagamento é feito pela plataforma Kiwify, que é 100% segura e protege seus dados com tecnologia de ponta.</div>
-  </div>
-</div>
-
-  </section>  <script>
+  <section class="faq-section">
+    <h2 class="faq-title">Perguntas Frequentes (FAQ)</h2>
+    <div class="faq-item">
+      <img src="faq1.png" alt="Ícone recebimento">
+      <div class="text">
+        <div class="question">1. Como vou receber o e-book?</div>
+        <div class="answer">Você receberá o e-book diretamente no seu e-mail logo após a confirmação do pagamento. É rápido e prático!</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <img src="faq2.png" alt="Ícone glúten lactose">
+      <div class="text">
+        <div class="question">2. O conteúdo é realmente sem glúten e sem lactose?</div>
+        <div class="answer">Sim! Todas as receitas foram pensadas para quem tem intolerância ou deseja evitar esses ingredientes.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <img src="faq3.png" alt="Ícone dificuldade">
+      <div class="text">
+        <div class="question">3. É difícil preparar as receitas?</div>
+        <div class="answer">Nada disso! São receitas simples, com ingredientes acessíveis, perfeitas para o dia a dia.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <img src="faq4.png" alt="Ícone experiência">
+      <div class="text">
+        <div class="question">4. Preciso ter experiência na cozinha para fazer as receitas?</div>
+        <div class="answer">De jeito nenhum! As receitas são simples, explicadas passo a passo e ideais até para quem está começando.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <img src="faq5.png" alt="Ícone pagamento seguro">
+      <div class="text">
+        <div class="question">5. O pagamento é seguro?</div>
+        <div class="answer">Sim! O pagamento é feito pela plataforma Kiwify, que é 100% segura e protege seus dados com tecnologia de ponta.</div>
+      </div>
+    </div>
+  </section>
+  <section class="final-section">
+    <h2>Cuida! Que a Oferta terminará em poucos minutos.</h2>
+    <p>Aproveite agora e transforme sua alimentação com receitas saudáveis, acessíveis e deliciosas!</p>
+    <div class="nav-links">
+      <a href="#inicio">Início</a>
+      <a href="#porque">Por que este E-book é para você?</a>
+      <a href="#depoimentos">Depoimentos</a>
+      <a href="#conteudo">O que tem no E-BOOK?</a>
+    </div>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/SEU_USUARIO" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+      <a href="https://www.facebook.com/SEU_USUARIO" target="_blank"><img src="facebook-logo.png" alt="Facebook"></a>
+    </div>
+    <a href="#" class="buy-btn">Comprar Agora</a>
+  </section>
+  <script>
     var countDownDate = new Date().getTime() + 10*60*1000;
     setInterval(function(){
       var now = new Date().getTime(), d = countDownDate - now,
@@ -187,5 +252,6 @@
         document.getElementById("countdown").innerHTML = "Oferta Expirada";
       }
     }, 1000);
-  </script></body>
+  </script>
+</body>
 </html>

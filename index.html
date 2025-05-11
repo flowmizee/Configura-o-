@@ -2,11 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- Meta viewport atualizado para evitar zoom -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Landing Page - Receitas Saudáveis</title>
   <style>
-    /* Reset básico e prevenção de scroll horizontal */
     html, body {
       margin: 0;
       padding: 0;
@@ -16,11 +14,10 @@
       box-sizing: border-box;
     }
     body {
-      background: #050506; /* Fundo preto da página */
+      background: #050506;
       font-family: Arial, sans-serif;
-      padding: 0;
     }
-    /* Componente de Cronômetro fixo no topo */
+
     .offer-timer {
       position: fixed;
       top: 0;
@@ -38,29 +35,42 @@
       font-size: 20px;
       margin: 0;
     }
-    .offer-timer #countdown {
-      margin-top: 2px;
-    }
-    /* Wrapper geral para centralizar conteúdo */
+
     .content-wrapper {
-      margin: 70px auto 0;
+      margin-top: 70px;
       max-width: 420px;
       text-align: center;
-      position: relative;
+      margin-left: auto;
+      margin-right: auto;
     }
-    /* Hero container para posicionar botão sobre cada imagem */
-    .hero-container {
+
+    /* Primeira seção: altura 100% da tela */
+    .hero-container:first-of-type {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hero-container:first-of-type .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Segunda seção normal */
+    .hero-container:nth-of-type(2) {
       position: relative;
       width: 100%;
       max-width: 420px;
-      margin: 0 auto 0px;
+      margin: 0 auto;
     }
-    .hero-image {
+    .hero-container:nth-of-type(2) .hero-image {
       width: 100%;
       height: auto;
       display: block;
     }
-    /* Botão flutuante sobre a imagem */
+
     .ebook-btn {
       position: absolute;
       bottom: 16px;
@@ -68,8 +78,8 @@
       transform: translateX(-50%);
       background-color: #790000;
       color: #fff;
-      width: 300px;          
-      height: 70px;          
+      width: 300px;
+      height: 70px;
       line-height: 70px;
       font-size: 20px;
       text-align: center;
@@ -86,7 +96,7 @@
       animation: clickEffect 0.3s ease-in-out forwards;
       box-shadow: 0 1px 4px rgba(0,0,0,0.6);
     }
-    /* Animações */
+
     @keyframes float {
       0%   { transform: translateX(-50%) translateY(0); }
       50%  { transform: translateX(-50%) translateY(-8px); }
@@ -97,7 +107,7 @@
       50%  { transform: translateX(-50%) translateY(-4px) scale(0.98); }
       100% { transform: translateX(-50%) translateY(0) scale(1); }
     }
-    /* Responsividade */
+
     @media (max-width: 480px) {
       .ebook-btn {
         width: 260px;
@@ -108,7 +118,6 @@
     }
   </style>
   <script>
-    // Cronômetro: 10 minutos a partir do carregamento
     var countDownDate = new Date().getTime() + 10 * 60 * 1000;
     var countdownfunction = setInterval(function() {
       var now = new Date().getTime();
@@ -124,27 +133,20 @@
   </script>
 </head>
 <body>
-  <!-- Cronômetro fixo -->
   <div class="offer-timer">
     <p>OFERTA LIMITADA! APROVEITE AGORA!</p>
     <div id="countdown"></div>
   </div>
 
-  <!-- Conteúdo principal -->
   <div class="content-wrapper">
-    <!-- Primeira hero section -->
     <div class="hero-container">
       <img src="hero.png" alt="Capa do e-book de Receitas" class="hero-image">
       <a href="#" class="ebook-btn">Quero meu E-Book</a>
     </div>
 
-    <!-- Segunda hero section -->
     <div class="hero-container">
       <img src="hero2.png" alt="Segunda capa do e-book de Receitas" class="hero-image">
-      <a href="#" class="ebook-btn">Garantir meu E-Book</a>
     </div>
-
-    <!-- Outras seções que você quiser adicionar aqui -->
   </div>
 </body>
 </html>

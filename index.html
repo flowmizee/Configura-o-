@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -36,47 +35,11 @@
     .hero-image {
       width: 100%; display: block;
     }
-    /* Primeira hero full-height */
     .hero-container:first-of-type {
       height: 85vh; overflow: hidden;
     }
     .hero-container:first-of-type .hero-image {
       height: 100%; object-fit: cover;
-    }
-    /* Outras heroes */
-    .hero-container:nth-of-type(2) .hero-image,
-    .hero-container:nth-of-type(3) .hero-image {
-      height: auto;
-    }
-    /* Animação da esquerda – permanece igual */
-    .hero-container:nth-of-type(3) .anima-left {
-      position: absolute;
-      width: 420px;
-      bottom: 10%;     /* ajustado para ficar mais abaixo */
-      left: -600px;
-      opacity: 0;
-      z-index: 11;
-    }
-    .hero-container:nth-of-type(3).in-view .anima-left {
-      animation: slideInLeft 2s ease-out forwards;
-    }
-    @keyframes slideInLeft {
-      to { transform: translateX(640px); opacity: 1; }
-    }
-    /* Animação da direita – empurrada bem para baixo */
-    .hero-container:nth-of-type(3) .anima-right {
-      position: absolute;
-      width: 420px;
-      bottom: 10%;
-      right: -600px;
-      opacity: 0;
-      z-index: 11;
-    }
-    .hero-container:nth-of-type(3).in-view .anima-right {
-      animation: slideInRight 2s ease-out forwards;
-    }
-    @keyframes slideInRight {
-      to { transform: translateX(-640px); opacity: 1; }
     }
     .ebook-btn {
       position: absolute; bottom: 16px; left: 50%;
@@ -105,22 +68,6 @@
         width: 260px; height: 50px;
         line-height: 50px; font-size: 18px;
       }
-      .hero-container:nth-of-type(3) .anima-left {
-        width: 315px;
-        bottom: 39%;   /* ajustado para mobile também */
-        left: -400px;
-      }
-      .hero-container:nth-of-type(3) .anima-right {
-        width: 280px;
-        bottom: 5%;
-        right: -380px;
-      }
-      @keyframes slideInLeft {
-        to { transform: translateX(440px); opacity: 1; }
-      }
-      @keyframes slideInRight {
-        to { transform: translateX(-440px); opacity: 1; }
-      }
     }
   </style>
 </head>
@@ -139,9 +86,7 @@
     </div>
     <div class="hero-container">
       <img src="hero3.png" class="hero-image" alt="Terceira capa do e-book">
-      <img src="anima.png" class="anima-left" alt="Animação da esquerda">
-      <img src="anima2.png" class="anima-right" alt="Animação da direita">
-      <a href="#" class="ebook-btn">Garantir meu E-Book</a>
+      <a href="#" class="ebook-btn">Garantir meu E-BOOK</a>
     </div>
   </div>
   <script>
@@ -152,19 +97,11 @@
           m = Math.floor((d % (1000*60*60)) / (1000*60)),
           s = Math.floor((d % (1000*60)) / 1000);
       document.getElementById("countdown").innerHTML = m+"m "+s+"s ⏳";
-      if(d<0){ clearInterval(this); document.getElementById("countdown").innerHTML="Oferta Expirada"; }
-    },1000);
-
-    // Dispara animações ao entrar em view
-    document.addEventListener("DOMContentLoaded", function(){
-      var hero3 = document.querySelector(".hero-container:nth-of-type(3)");
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if(e.isIntersecting){ hero3.classList.add("in-view"); io.unobserve(hero3); }
-        });
-      }, { threshold: 0.5 });
-      io.observe(hero3);
-    });
+      if (d < 0) {
+        clearInterval(this);
+        document.getElementById("countdown").innerHTML = "Oferta Expirada";
+      }
+    }, 1000);
   </script>
 </body>
-    </html>
+</html>

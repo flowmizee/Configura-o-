@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>15 Receitas Sem Glúten e Sem Leite</title>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     html, body {
       margin: 0; padding: 0; overflow-x: hidden;
     }
@@ -176,11 +178,11 @@
     <div class="hero-container" id="porque">
       <img src="hero2.png" class="hero-image" alt="Segunda capa do e-book">
     </div>
-    <div class="hero-container" id="depoimentos">
+    <div class="hero-container">
       <img src="hero3.png" class="hero-image" alt="Terceira capa do e-book">
       <a href="https://pay.kiwify.com.br/68vs72A" class="ebook-btn" target="_blank">Garantir meu E-BOOK</a>
     </div>
-    <div class="hero-container">
+    <div class="hero-container" id="depoimentos">
       <img src="hero4.png" class="hero-image" alt="Quarta capa do e-book">
     </div>
     <div class="hero-container" id="conteudo">
@@ -242,6 +244,7 @@
     <a href="https://pay.kiwify.com.br/68vs72A" class="buy-btn" target="_blank">Comprar Agora</a>
   </section>
   <script>
+    // countdown
     var countDownDate = new Date().getTime() + 10*60*1000;
     setInterval(function(){
       var now = new Date().getTime(), d = countDownDate - now,
@@ -252,7 +255,20 @@
         clearInterval(this);
         document.getElementById("countdown").innerHTML = "Oferta Expirada";
       }
-    }, 1000);
+    }, 1000);// navegação com offsets crescentes
+document.querySelectorAll('.nav-links a').forEach(function(link, idx){
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    var targetId = this.getAttribute('href').substring(1);
+    var el = document.getElementById(targetId);
+    // offsets: 0, 30, 60, 90 px para cada link
+    var offsets = [0, 30, 60, 90];
+    var offset = offsets[idx] + 70; // +70 px para compensar header
+    var topPos = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: topPos, behavior: 'smooth' });
+  });
+});
+
   </script>
 </body>
 </html>
